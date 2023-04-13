@@ -57,5 +57,16 @@ public class EggBehaviour : MonoBehaviour
             eggCounter.eggCount--;
             eggCounter.updateText();
         }
+
+        if (collision.gameObject.name == "A" || collision.gameObject.name == "B" || collision.gameObject.name == "C" 
+            || collision.gameObject.name == "D" || collision.gameObject.name == "E" || collision.gameObject.name == "F")
+        {
+            Debug.Log("Egg has hit a waypoint");
+            collision.gameObject.GetComponent<WaypointBehavior>().takeDamage();
+            Destroy(gameObject);
+            eggCounter.eggCount--;
+            eggCounter.updateText();
+        }
+
     }
 }
