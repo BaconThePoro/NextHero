@@ -7,18 +7,19 @@ public class WaypointBehavior : MonoBehaviour
     int currLife = 4;
     Color ourColor;
     int distance = 15; // units
-    Vector3 prevPos; 
+    Vector3 prevPos;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        ourColor = GetComponent<SpriteRenderer>().color; 
+        ourColor = GetComponent<SpriteRenderer>().color;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void takeDamage()

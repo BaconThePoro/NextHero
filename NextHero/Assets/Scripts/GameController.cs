@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
     public Text ourText = null;
     EnemyCount enemyCount;
     public bool enemyMove = false;
+    public bool waypointActive = true;
+    public GameObject allWaypoints = null; 
 
     private float waitAmount = 25.0f;
     private float waitTime = 0.0f;
@@ -42,6 +44,12 @@ public class GameController : MonoBehaviour
             DogSphere.transform.position = newP;
         }
 
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            waypointActive = !waypointActive;
+            if (allWaypoints != null)
+                allWaypoints.SetActive(waypointActive);
+        }
 
         if (Input.GetKeyDown(KeyCode.N))
         {
