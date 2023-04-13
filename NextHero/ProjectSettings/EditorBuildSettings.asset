@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/HeroObject.unity
+    guid: 6f67df0007098244f80bb516d6f83b72
   m_configObjects: {}
