@@ -46,9 +46,7 @@ public class GameController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            waypointActive = !waypointActive;
-            if (allWaypoints != null)
-                allWaypoints.SetActive(waypointActive);
+            allWaypoints.GetComponent<AllWaypoints>().toggleVisible();
         }
 
         if (Input.GetKeyDown(KeyCode.N))

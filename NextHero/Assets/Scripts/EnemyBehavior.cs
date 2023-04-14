@@ -10,14 +10,14 @@ public class EnemyBehavior : MonoBehaviour
 
     Rigidbody2D ourRB; 
    
-    float speed = 10f;
+    float speed = 0.25f;
     CameraSupport s = null;
     Bounds scaledBound;
-    private float waitAmount = 1.0f;
-    private float waitTime = 0.0f;
+    //private float waitAmount = 1.0f;
+    //private float waitTime = 0.0f;
     GameObject ControllerObject;
     GameController gameController; 
-    Vector3 stationary = new Vector3(0f, 1f, 0f);
+    //Vector3 stationary = new Vector3(0f, 1f, 0f);
 
     GameObject Hero = null;
     HeroMovement heroMovement;
@@ -25,8 +25,14 @@ public class EnemyBehavior : MonoBehaviour
     GameObject lifebar = null; 
     Vector3 offset = new Vector3(0f, 10f, 0f);
 
+    bool pathingToggle = false; // false = sequential, true = random
+    AllWaypoints allWaypoints = null;
+    int currWaypoint = 0;
+    
+
     void Start()
     {
+        currWaypoint = 0;
         currLife = 4; 
         ourSpriteRenderer = GetComponent<SpriteRenderer>();
         ourRB = GetComponent<Rigidbody2D>();
@@ -39,6 +45,7 @@ public class EnemyBehavior : MonoBehaviour
         Hero = GameObject.Find("Hero");
         heroMovement = Hero.GetComponent<HeroMovement>();
 
+        allWaypoints = GameObject.Find("AllWaypoints").GetComponent<AllWaypoints>();
     }
 
     // Update is called once per frame
@@ -52,93 +59,35 @@ public class EnemyBehavior : MonoBehaviour
             heroMovement.updateDestroyed();
         }
 
-
-        if (gameController.enemyMove == false)
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            transform.up = stationary;
-            Destroy(lifebar);
+            pathingToggle = !pathingToggle;
         }
-
     }
 
     private void FixedUpdate()
     {
-        if (gameController.enemyMove)
-        {
-            if (transform.up == stationary)
-            {
-                randDirection();
-            }
+        transform.up = (allWaypoints.getPos(currWaypoint) - transform.position).normalized;
+        transform.position = Vector3.MoveTowards(transform.position, allWaypoints.getPos(currWaypoint), speed);
 
-            ourRB.MovePosition(transform.position + transform.up * speed * Time.smoothDeltaTime);
-            
-            if (!s.isInsideBounds(transform.GetComponent<Collider2D>().bounds, scaledBound) && Time.time > waitTime)
-            {
-                waitTime = Time.time + waitAmount;
-                Debug.Log("Plane hit edge");
-                refDirection();
-            }
-
-            if (currLife == 4)
-            {
-                if (lifebar == null)
-                    lifebar = Instantiate(Resources.Load("Prefabs/4life") as GameObject);
-
-                lifebar.transform.position = transform.position + offset;
-            }
-            else if (currLife == 3)
-            {
-                if (lifebar == null)
-                    lifebar = Instantiate(Resources.Load("Prefabs/3life") as GameObject);
-
-                lifebar.transform.position = transform.position + offset;
-            }
-            else if (currLife == 2)
-            {
-                if (lifebar == null)
-                    lifebar = Instantiate(Resources.Load("Prefabs/2life") as GameObject);
-
-                lifebar.transform.position = transform.position + offset;
-            }
-            else if (currLife == 1)
-            {
-                if (lifebar == null)
-                    lifebar = Instantiate(Resources.Load("Prefabs/1life") as GameObject);
-
-                lifebar.transform.position = transform.position + offset;
-            }
-        }
     }
 
-    void randDirection()
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        transform.up = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0); 
-    }
-
-    void refDirection()
-    {
-        Vector3 normal = transform.up;
-
-        if (transform.position.x > scaledBound.max.x)
+        if (collision.gameObject.transform.position == allWaypoints.getPos(currWaypoint))
         {
-            normal = new Vector3(1f, 0f, 0f);
+            // sequential
+            if (!pathingToggle)
+            {
+                if (currWaypoint == 5)
+                    currWaypoint = 0;
+                else currWaypoint++; 
+            }
+            else
+            {
+                currWaypoint = Random.Range(0, 5);
+            }
         }
-        else if (transform.position.x < scaledBound.min.x)
-        {
-            normal = new Vector3(-1f, 0f, 0f);
-        }
-
-        if (transform.position.y > scaledBound.max.y)
-        {
-            normal = new Vector3(0, -1f, 0f);
-        }
-        else if (transform.position.y < scaledBound.min.y)
-        {
-            normal = new Vector3(0, 1f, 0f); 
-        }
-
-
-        transform.up = transform.up.normalized - 2 * (Vector3.Dot(transform.up.normalized, normal)) * normal;
 
     }
 
@@ -148,12 +97,6 @@ public class EnemyBehavior : MonoBehaviour
         Color newColor = new Color(ourSpriteRenderer.color.r, ourSpriteRenderer.color.g, ourSpriteRenderer.color.b, GetComponent<SpriteRenderer>().color.a * 0.8f);
         ourSpriteRenderer.color = newColor;
 
-        if (lifebar != null)
-            Destroy(lifebar);
-    }
-
-    private void OnDestroy()
-    {
         if (lifebar != null)
             Destroy(lifebar);
     }

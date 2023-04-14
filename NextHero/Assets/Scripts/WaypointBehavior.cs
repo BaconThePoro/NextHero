@@ -7,13 +7,15 @@ public class WaypointBehavior : MonoBehaviour
     int currLife = 4;
     Color ourColor;
     int distance = 15; // units
-    Vector3 prevPos;
+    Vector3 initPos;
+    public GameObject allWaypoints = null; 
     
 
     // Start is called before the first frame update
     void Start()
     {
         ourColor = GetComponent<SpriteRenderer>().color;
+        initPos = transform.position;
     }
 
     // Update is called once per frame
@@ -53,7 +55,7 @@ public class WaypointBehavior : MonoBehaviour
         else
             y = 1;
 
-        prevPos = transform.position;
-        transform.position = new Vector3(prevPos.x + x * distance, prevPos.y + y * distance, 0);
+        transform.position = new Vector3(initPos.x + x * distance, initPos.y + y * distance, 0);
+        allWaypoints.GetComponent<AllWaypoints>().updatePos();
     }
 }
