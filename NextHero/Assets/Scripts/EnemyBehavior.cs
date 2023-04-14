@@ -26,7 +26,7 @@ public class EnemyBehavior : MonoBehaviour
     GameObject lifebar = null; 
     Vector3 offset = new Vector3(0f, 10f, 0f);
 
-    bool pathingToggle = false; // false = sequential, true = random
+    bool pathingToggle = true; // false = sequential, true = random
     AllWaypoints allWaypoints = null;
     int currWaypoint = 0;
 
