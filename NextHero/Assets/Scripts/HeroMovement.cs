@@ -27,11 +27,20 @@ public class HeroMovement : MonoBehaviour
     int touched = 0;
 
     public GameObject shotCD = null;
+    GameObject bar4 = null;
+    GameObject bar3 = null;
+    GameObject bar2 = null;
+    GameObject bar1 = null;
+
 
     void Start()
     {
         mGameGameController = FindObjectOfType<GameController>();
         eggCounter = TextObject.GetComponent<EggCount>();
+        bar4 = shotCD.transform.GetChild(0).gameObject;
+        bar3 = shotCD.transform.GetChild(1).gameObject;
+        bar2 = shotCD.transform.GetChild(2).gameObject;
+        bar1 = shotCD.transform.GetChild(3).gameObject;
     }
 
     // Update is called once per frame
@@ -84,6 +93,7 @@ public class HeroMovement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.Space) && Time.time > shotCooldown)
         {
+            StartCoroutine(shotMeter());
             shotCooldown = Time.time + rateOfFire; 
 
             // Prefab MUST BE locaed in Resources/Prefab folder!
@@ -95,6 +105,22 @@ public class HeroMovement : MonoBehaviour
             eggCounter.updateText();
         }
         transform.position = pos;
+    }
+
+    private IEnumerator shotMeter()
+    {
+        bar4.SetActive(true);
+        yield return new WaitForSeconds(0.05f);
+        bar4.SetActive(false);
+        bar3.SetActive(true);
+        yield return new WaitForSeconds(0.05f);
+        bar3.SetActive(false);
+        bar2.SetActive(true);
+        yield return new WaitForSeconds(0.05f);
+        bar2.SetActive(false);
+        bar1.SetActive(true);
+        yield return new WaitForSeconds(0.05f);
+        bar1.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
