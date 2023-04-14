@@ -20,7 +20,6 @@ public class GameController : MonoBehaviour
     Vector3 newV = new Vector3(-60f, 20f, 0f);
     Vector3 newR = new Vector3(0.6f, 0.9f, 1f);
     Vector3 newP = new Vector3(300, -100, 80);
-    
 
     // Start is called before the first frame update
     void Start()

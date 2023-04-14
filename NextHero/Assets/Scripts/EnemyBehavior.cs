@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyBehavior : MonoBehaviour
 {
@@ -28,7 +29,6 @@ public class EnemyBehavior : MonoBehaviour
     bool pathingToggle = false; // false = sequential, true = random
     AllWaypoints allWaypoints = null;
     int currWaypoint = 0;
-    
 
     void Start()
     {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AllWaypoints : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class AllWaypoints : MonoBehaviour
     Renderer Erend = null;
     Renderer Frend = null;
 
+    public Text waypointTXT = null;
+    bool waypointBool = true; 
+
     void Start()
     {
         updatePos(); 
@@ -32,7 +36,15 @@ public class AllWaypoints : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            waypointBool = !waypointBool;
 
+            if (!waypointBool)
+                waypointTXT.text = "Waypoints: Sequence";
+            else
+                waypointTXT.text = "Waypoints: Random";
+        }
     }
 
     public void updatePos()

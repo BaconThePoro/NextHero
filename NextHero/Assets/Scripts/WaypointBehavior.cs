@@ -6,7 +6,6 @@ public class WaypointBehavior : MonoBehaviour
 {
     int currLife = 4;
     Color ourColor;
-    int distance = 15; // units
     Vector3 initPos;
     public GameObject allWaypoints = null; 
     
@@ -43,19 +42,7 @@ public class WaypointBehavior : MonoBehaviour
 
     public void moveWaypoint()
     {
-        float x = Random.value;
-        if (x <= 0.4)
-            x = -1;
-        else
-            x = 1;
-
-        float y = Random.value;
-        if (y <= 0.4)
-            y = -1;
-        else
-            y = 1;
-
-        transform.position = new Vector3(initPos.x + x * distance, initPos.y + y * distance, 0);
+        transform.position = new Vector3(initPos.x + Random.Range(-15, 15), initPos.y + Random.Range(-15, 15), 0);
         allWaypoints.GetComponent<AllWaypoints>().updatePos();
     }
 }
