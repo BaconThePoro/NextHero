@@ -26,6 +26,8 @@ public class HeroMovement : MonoBehaviour
     public Text touchedText = null;
     int touched = 0;
 
+    public GameObject shotCD = null;
+
     void Start()
     {
         mGameGameController = FindObjectOfType<GameController>();

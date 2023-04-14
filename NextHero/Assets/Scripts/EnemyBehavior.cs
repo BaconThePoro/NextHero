@@ -29,7 +29,7 @@ public class EnemyBehavior : MonoBehaviour
     bool pathingToggle = false; // false = sequential, true = random
     AllWaypoints allWaypoints = null;
     int currWaypoint = 0;
-    float turnSpeed = 1.5f;
+    float turnSpeed = 1.8f;
 
     void Start()
     {
