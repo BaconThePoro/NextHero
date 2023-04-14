@@ -20,7 +20,7 @@ public class AllWaypoints : MonoBehaviour
     Renderer Frend = null;
 
     public Text waypointTXT = null;
-    bool waypointBool = true; 
+    public bool waypointBool = false; 
 
     void Start()
     {

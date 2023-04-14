@@ -11,7 +11,7 @@ public class EnemyBehavior : MonoBehaviour
 
     Rigidbody2D ourRB; 
    
-    float speed = 0.25f;
+    float speed = 20f;
     CameraSupport s = null;
     Bounds scaledBound;
     //private float waitAmount = 1.0f;
@@ -26,9 +26,10 @@ public class EnemyBehavior : MonoBehaviour
     GameObject lifebar = null; 
     Vector3 offset = new Vector3(0f, 10f, 0f);
 
-    bool pathingToggle = true; // false = sequential, true = random
+    bool pathingToggle = false; // false = sequential, true = random
     AllWaypoints allWaypoints = null;
     int currWaypoint = 0;
+    float turnSpeed = 1.5f;
 
     void Start()
     {
@@ -59,17 +60,16 @@ public class EnemyBehavior : MonoBehaviour
             heroMovement.updateDestroyed();
         }
 
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            pathingToggle = !pathingToggle;
-        }
+        pathingToggle = allWaypoints.waypointBool;     
     }
 
     private void FixedUpdate()
     {
-        transform.up = (allWaypoints.getPos(currWaypoint) - transform.position).normalized;
-        transform.position = Vector3.MoveTowards(transform.position, allWaypoints.getPos(currWaypoint), speed);
-
+        float singleStep = turnSpeed * Time.smoothDeltaTime;
+        Vector3 desiredUp = (allWaypoints.getPos(currWaypoint) - transform.position).normalized; 
+        transform.up = Vector3.RotateTowards(transform.up, desiredUp, singleStep, 100f);
+        transform.position = transform.position + transform.up * speed * Time.smoothDeltaTime;
+        
     }
 
     private void OnTriggerStay2D(Collider2D collision)
